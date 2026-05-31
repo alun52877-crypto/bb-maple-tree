@@ -48,6 +48,9 @@
       </view>
     </view>
 
+    <view wx:if="{{isLoadingPlants}}" class="list-footer">加载中...</view>
+    <view wx:elif="{{!hasMorePlants}}" class="list-footer">已加载全部植物</view>
+
     <view class="add-entry-shell">
       <button class="add-entry" bindtap="goToCreate">＋</button>
       <view class="add-entry-text">新增植物</view>

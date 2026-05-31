@@ -398,6 +398,14 @@
   padding: 20rpx 0 calc(env(safe-area-inset-bottom) + 12rpx);
 }
 
+.list-footer {
+  padding: 16rpx 0 6rpx;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 24rpx;
+  font-weight: 700;
+  text-align: center;
+}
+
 .add-entry {
   display: flex;
   align-items: center;

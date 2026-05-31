@@ -1,5 +1,6 @@
 const LOCAL_STORAGE_KEY = 'plants'
 const COLLECTION_NAME = 'plants'
+const PLANTS_PAGE_SIZE = 20
 
 function getLocalPlants() {
   const plants = wx.getStorageSync(LOCAL_STORAGE_KEY)
@@ -81,6 +82,22 @@ async function getPlants() {
   return Array.isArray(data) ? data.map(stripDocId) : []
 }
 
+async function getPlantsPage(options = {}) {
+  await ensureMigrated()
+  const offset = Number.isInteger(options.offset) && options.offset > 0 ? options.offset : 0
+  const limit = Number.isInteger(options.limit) && options.limit > 0
+    ? Math.min(options.limit, PLANTS_PAGE_SIZE)
+    : PLANTS_PAGE_SIZE
+  const collection = getCollection()
+  const { data } = await collection.orderBy('updatedAt', 'desc').skip(offset).limit(limit).get()
+  const plants = Array.isArray(data) ? data.map(stripDocId) : []
+
+  return {
+    plants,
+    hasMore: plants.length === limit,
+  }
+}
+
 async function getPlantById(id) {
   const collection = getCollection()
   await ensureMigrated()
@@ -125,6 +142,7 @@ module.exports = {
   addPlant,
   getPlantById,
   getPlants,
+  getPlantsPage,
   getLocalPlants,
   removePlant,
   saveLocalPlants,

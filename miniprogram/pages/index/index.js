@@ -1,6 +1,8 @@
 const { formatDate } = require('../../utils/date')
 const { buildPlantList } = require('../../utils/plants')
-const { getPlantById, getPlants, updatePlant } = require('../../utils/storage')
+const { getPlantById, getPlantsPage, updatePlant } = require('../../utils/storage')
+
+const PAGE_SIZE = 20
 
 Page({
   data: {
@@ -8,7 +10,11 @@ Page({
     plants: [],
     actionKey: '',
     missionCard: null,
+    hasMorePlants: true,
+    isLoadingPlants: false,
   },
+
+  plantSource: [],
 
   onShow() {
     this.setData({
@@ -18,21 +24,48 @@ Page({
   },
 
   async loadPlants() {
+    this.plantSource = []
+    await this.loadPlantsPage({ reset: true })
+  },
+
+  async loadPlantsPage({ reset = false } = {}) {
+    if (this.data.isLoadingPlants) {
+      return
+    }
+
+    if (!reset && !this.data.hasMorePlants) {
+      return
+    }
+
+    const offset = reset ? 0 : this.plantSource.length
+
     try {
-      const plants = await getPlants()
-      const plantList = buildPlantList(plants)
+      this.setData({ isLoadingPlants: true })
+      const { plants, hasMore } = await getPlantsPage({
+        offset,
+        limit: PAGE_SIZE,
+      })
+      this.plantSource = reset ? plants : this.plantSource.concat(plants)
+      const plantList = buildPlantList(this.plantSource)
       const missionCard = this.buildMissionCard(plantList)
 
       this.setData({
         plants: plantList,
         missionCard,
+        hasMorePlants: hasMore,
       })
     } catch (error) {
       wx.showToast({
         title: error.message || '加载植物失败',
         icon: 'none',
       })
+    } finally {
+      this.setData({ isLoadingPlants: false })
     }
+  },
+
+  onReachBottom() {
+    this.loadPlantsPage()
   },
 
   buildMissionCard(plants) {
