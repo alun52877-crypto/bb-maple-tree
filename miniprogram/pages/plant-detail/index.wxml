@@ -25,7 +25,7 @@
 
     <view class="action-row">
       <button class="retro-detail-button primary" loading="{{activeAction === 'water'}}" bindtap="markWatered">浇水</button>
-      <button class="retro-detail-button secondary" loading="{{activeAction === 'rootSterilize' || activeAction === 'sterilizeSpray' || activeAction === 'pestSpray'}}" bindtap="addRecord">添加记录</button>
+      <button class="retro-detail-button secondary" loading="{{activeAction === 'rootSterilize' || activeAction === 'sterilizeSpray' || activeAction === 'pestSpray' || activeAction === 'repot'}}" bindtap="addRecord">添加记录</button>
     </view>
 
     <view class="action-row secondary-row">

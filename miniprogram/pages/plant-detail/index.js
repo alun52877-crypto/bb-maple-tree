@@ -236,21 +236,15 @@ Page({
   },
 
   addRecord() {
+    const recordTypes = ['rootSterilize', 'sterilizeSpray', 'pestSpray', 'repot']
+
     wx.showActionSheet({
-      itemList: ['杀菌灌根', '杀菌喷药', '驱虫喷药'],
+      itemList: ['杀菌灌根', '杀菌喷药', '驱虫喷药', '换盆换土'],
       success: ({ tapIndex }) => {
-        if (tapIndex === 0) {
-          this.openCreateRecordPicker('rootSterilize')
-          return
-        }
+        const type = recordTypes[tapIndex]
 
-        if (tapIndex === 1) {
-          this.openCreateRecordPicker('sterilizeSpray')
-          return
-        }
-
-        if (tapIndex === 2) {
-          this.openCreateRecordPicker('pestSpray')
+        if (type) {
+          this.openCreateRecordPicker(type)
         }
       },
     })
@@ -285,7 +279,9 @@ Page({
             ? '已记录杀菌灌根'
             : type === 'sterilizeSpray'
               ? '已记录杀菌喷药'
-              : '已记录驱虫喷药',
+              : type === 'pestSpray'
+                ? '已记录驱虫喷药'
+                : '已记录换盆换土',
         icon: 'success',
       })
     } catch (error) {
@@ -340,7 +336,7 @@ Page({
 
     const { confirm } = await wx.showModal({
       title: '删除记录',
-      content: `确认删除这条“${targetRecord.type === 'water' ? '浇水' : targetRecord.type === 'rootSterilize' ? '杀菌灌根' : targetRecord.type === 'sterilizeSpray' ? '杀菌喷药' : '驱虫喷药'}”记录吗？`,
+      content: `确认删除这条“${targetRecord.type === 'water' ? '浇水' : targetRecord.type === 'rootSterilize' ? '杀菌灌根' : targetRecord.type === 'sterilizeSpray' ? '杀菌喷药' : targetRecord.type === 'pestSpray' ? '驱虫喷药' : '换盆换土'}”记录吗？`,
       confirmColor: '#FF6B6B',
     })
 

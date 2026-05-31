@@ -242,6 +242,10 @@
   background: #d8a35e;
 }
 
+.timeline-dot.repot {
+  background: #b985d6;
+}
+
 .timeline-line {
   position: absolute;
   top: 24rpx;
@@ -291,6 +295,10 @@
   color: #8b5c2e;
 }
 
+.timeline-label.repot {
+  color: #6b3f88;
+}
+
 .timeline-relative {
   flex-shrink: 0;
   padding: 8rpx 12rpx;
@@ -320,6 +328,11 @@
 .timeline-relative.pest-spray {
   background: #f7ede0;
   color: #8b5c2e;
+}
+
+.timeline-relative.repot {
+  background: #f1e8f8;
+  color: #6b3f88;
 }
 
 .timeline-time {

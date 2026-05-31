@@ -5,6 +5,7 @@ const RECORD_LABEL_MAP = {
   rootSterilize: '杀菌灌根',
   sterilizeSpray: '杀菌喷药',
   pestSpray: '驱虫喷药',
+  repot: '换盆换土',
 }
 
 const RECORD_CLASS_MAP = {
@@ -12,6 +13,7 @@ const RECORD_CLASS_MAP = {
   rootSterilize: 'root-sterilize',
   sterilizeSpray: 'sterilize-spray',
   pestSpray: 'pest-spray',
+  repot: 'repot',
 }
 
 function createRecord(type, time) {
