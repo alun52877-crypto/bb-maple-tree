@@ -1,0 +1,116 @@
+page,
+view,
+text,
+button,
+input,
+picker {
+  box-sizing: border-box;
+  font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+}
+
+page {
+  min-height: 100%;
+  background: #f7f9f7;
+  color: #333333;
+}
+
+button::after {
+  border: 0;
+}
+
+.page-shell {
+  min-height: 100vh;
+  padding: 32rpx;
+  box-sizing: border-box;
+  background: #f7f9f7;
+}
+
+.page-title {
+  font-size: 48rpx;
+  font-weight: 900;
+  line-height: 1.15;
+  color: #333333;
+}
+
+.page-subtitle {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  line-height: 1.6;
+  color: #96a095;
+  font-weight: 700;
+}
+
+.pill-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 84rpx;
+  padding: 0 36rpx;
+  border-radius: 999rpx;
+  font-size: 28rpx;
+  font-weight: 800;
+  box-sizing: border-box;
+  line-height: 1;
+}
+
+.pill-button.primary {
+  background: #6fbf73;
+  color: #ffffff;
+}
+
+.pill-button.secondary {
+  background: #edf5ed;
+  color: #4a7a4f;
+}
+
+.pill-button.subtle {
+  background: #ffffff;
+  color: #4e5850;
+  border: 1rpx solid #e4ebe4;
+}
+
+.pill-button.danger-outline {
+  background: #fff2f2;
+  color: #db6868;
+}
+
+.empty-state {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.empty-emoji {
+  font-size: 80rpx;
+}
+
+.empty-title {
+  margin-top: 20rpx;
+  font-size: 36rpx;
+  font-weight: 600;
+}
+
+.empty-text {
+  margin: 12rpx 0 28rpx;
+  font-size: 26rpx;
+  color: #98a09a;
+}
+
+.fade-up {
+  animation: fadeUp 0.35s ease both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24rpx);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

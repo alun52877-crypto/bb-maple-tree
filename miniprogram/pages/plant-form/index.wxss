@@ -1,0 +1,244 @@
+.page-shell {
+  background: linear-gradient(180deg, #4ba1cc 0%, #2f80ed 38%, #1e3a8a 100%);
+  min-height: 100vh;
+}
+
+.form-top {
+  display: flex;
+  justify-content: center;
+}
+
+.form-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 220rpx;
+  height: 96rpx;
+  padding: 0 30rpx;
+  border: 4rpx solid #1b1b1b;
+  border-radius: 24rpx;
+  background: #ffcb1f;
+  color: #1b1b1b;
+  font-size: 30rpx;
+  font-weight: 900;
+  box-shadow: 10rpx 10rpx 0 #1b1b1b;
+  transform: rotate(-2deg);
+  line-height: 1;
+}
+
+.form-hero {
+  margin-top: 24rpx;
+}
+
+.form-title {
+  color: #ffffff;
+  text-shadow: 4rpx 4rpx 0 rgba(0, 0, 0, 0.22);
+}
+
+.form-subtitle {
+  color: rgba(255, 255, 255, 0.84);
+  font-weight: 700;
+}
+
+.form-card {
+  margin-top: 28rpx;
+  padding: 12rpx 24rpx;
+  background: #f7efdc;
+  border: 4rpx solid #1b1b1b;
+  border-radius: 28rpx;
+  box-shadow: 10rpx 10rpx 0 #1b1b1b;
+}
+
+.field-group {
+  padding: 24rpx 0 28rpx;
+  border-bottom: 2rpx solid rgba(27, 27, 27, 0.12);
+}
+
+.field-group.no-border {
+  border-bottom: 0;
+}
+
+.field-label {
+  font-size: 26rpx;
+  color: rgba(27, 27, 27, 0.7);
+  font-weight: 800;
+  margin-bottom: 14rpx;
+}
+
+.field-hint {
+  font-size: 22rpx;
+  color: rgba(27, 27, 27, 0.5);
+}
+
+.field-input {
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 30rpx;
+  color: #1b1b1b;
+  font-weight: 700;
+}
+
+.field-textarea {
+  width: 100%;
+  min-height: 180rpx;
+  font-size: 28rpx;
+  color: #1b1b1b;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.field-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.picker-field {
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.picker-value {
+  font-size: 30rpx;
+  color: #1b1b1b;
+  font-weight: 700;
+}
+
+.picker-arrow {
+  font-size: 40rpx;
+  line-height: 1;
+  color: rgba(27, 27, 27, 0.45);
+}
+
+.preview-shell {
+  margin-top: 24rpx;
+  height: 360rpx;
+  padding: 14rpx;
+  border-radius: 24rpx;
+  overflow: hidden;
+  border: 3rpx solid #1b1b1b;
+  background: #e7f4e4;
+}
+
+.preview-shell.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 18rpx;
+  background:
+    radial-gradient(circle, rgba(33, 182, 92, 0.18) 20%, transparent 21%) 0 0 / 28rpx 28rpx,
+    linear-gradient(135deg, #f5fbf3 0%, #dff3e1 100%);
+}
+
+.preview-emoji {
+  font-size: 88rpx;
+}
+
+.retro-picker-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  height: 72rpx;
+  padding: 0 24rpx;
+  border: 3rpx solid #1b1b1b;
+  border-radius: 18rpx;
+  background: #ffcb1f;
+  color: #1b1b1b;
+  font-size: 24rpx;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: 6rpx 6rpx 0 #1b1b1b;
+}
+
+.retro-submit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 28rpx;
+  height: 92rpx;
+  border: 4rpx solid #1b1b1b;
+  border-radius: 22rpx;
+  background: #52d872;
+  color: #1b1b1b;
+  font-size: 30rpx;
+  font-weight: 900;
+  line-height: 1;
+  padding: 0 24rpx;
+  box-shadow: 10rpx 10rpx 0 #1b1b1b;
+}
+
+.picker-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: flex-end;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.picker-sheet {
+  width: 100%;
+  padding: 18rpx 24rpx calc(24rpx + env(safe-area-inset-bottom));
+  border-top-left-radius: 32rpx;
+  border-top-right-radius: 32rpx;
+  border: 4rpx solid #1b1b1b;
+  border-bottom: 0;
+  background: #f7efdc;
+  box-shadow: 0 -8rpx 0 #1b1b1b;
+}
+
+.picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.picker-title {
+  font-size: 28rpx;
+  font-weight: 900;
+  color: #1b1b1b;
+}
+
+.picker-action {
+  min-width: 96rpx;
+  font-size: 26rpx;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.picker-action.cancel {
+  color: rgba(27, 27, 27, 0.56);
+}
+
+.picker-action.confirm {
+  text-align: right;
+  color: #2d7d44;
+}
+
+.record-picker {
+  width: 100%;
+  height: 360rpx;
+  margin-top: 12rpx;
+}
+
+.picker-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #1b1b1b;
+}

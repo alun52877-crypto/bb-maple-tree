@@ -1,0 +1,77 @@
+<view wx:if="{{plant}}" class="detail-page">
+  <view class="detail-top fade-up">
+    <view class="detail-badge">植物详情</view>
+  </view>
+
+  <view wx:if="{{plant.image}}" class="hero-image-shell fade-up" bindtap="changeImage">
+    <image class="hero-image" src="{{plant.image}}" mode="aspectFill"></image>
+  </view>
+  <view wx:else class="hero-image-shell placeholder fade-up" bindtap="changeImage">
+    <image class="hero-image" src="/images/plant-placeholder.svg" mode="aspectFit"></image>
+  </view>
+
+  <view class="detail-card fade-up">
+    <view class="detail-header">
+      <view class="detail-name" bindtap="editName">{{plant.name}}</view>
+      <view class="detail-summary">{{plant.heroStatus}}</view>
+    </view>
+
+    <view class="note-block" bindtap="editNote">
+      <view class="note-label">备注</view>
+      <view class="note-panel">
+        <text class="note-content">{{plant.note || '还没有备注'}}</text>
+      </view>
+    </view>
+
+    <view class="action-row">
+      <button class="retro-detail-button primary" loading="{{activeAction === 'water'}}" bindtap="markWatered">浇水</button>
+      <button class="retro-detail-button secondary" loading="{{activeAction === 'rootSterilize' || activeAction === 'sterilizeSpray' || activeAction === 'pestSpray'}}" bindtap="addRecord">添加记录</button>
+    </view>
+
+    <view class="action-row secondary-row">
+      <button class="retro-detail-button danger single-danger" bindtap="deletePlant">删除</button>
+    </view>
+
+    <view class="timeline-shell">
+      <view class="timeline-title">养护记录</view>
+      <view wx:if="{{plant.visibleTimeline.length}}" class="timeline-list">
+        <view wx:for="{{plant.visibleTimeline}}" wx:key="id" class="timeline-item" data-id="{{item.id}}" bindtap="editRecord">
+          <view class="timeline-rail">
+            <view class="timeline-dot {{item.typeClass}}"></view>
+            <view class="timeline-line"></view>
+          </view>
+          <view class="timeline-content">
+            <view class="timeline-top">
+              <view class="timeline-label {{item.typeClass}}">{{item.label}}</view>
+              <view class="timeline-relative {{item.typeClass}}">{{item.relativeTime}}</view>
+            </view>
+            <view class="timeline-time">{{item.displayTime}}</view>
+          </view>
+        </view>
+        <button wx:if="{{plant.hasMoreTimeline}}" class="timeline-more" bindtap="loadMoreTimeline">查看更多记录</button>
+      </view>
+      <view wx:else class="timeline-empty">还没有记录，先写下第一条养护操作吧。</view>
+    </view>
+  </view>
+
+  <view wx:if="{{showRecordPicker}}" class="picker-mask" bindtap="closeRecordPicker">
+    <view class="picker-sheet" catchtap="noop">
+      <view class="picker-header">
+        <view class="picker-action cancel" bindtap="closeRecordPicker">取消</view>
+        <view class="picker-title">{{pickerMode === 'create' ? '选择日期' : '修改日期'}}</view>
+        <view class="picker-action confirm" bindtap="confirmRecordPicker">确定</view>
+      </view>
+      <picker-view class="record-picker" indicator-style="height: 88rpx;" value="{{pickerValue}}" bindchange="onPickerChange">
+        <picker-view-column>
+          <view wx:for="{{pickerYears}}" wx:key="*this" class="picker-item">{{item}}年</view>
+        </picker-view-column>
+        <picker-view-column>
+          <view wx:for="{{pickerMonths}}" wx:key="*this" class="picker-item">{{item}}月</view>
+        </picker-view-column>
+        <picker-view-column>
+          <view wx:for="{{pickerDays}}" wx:key="*this" class="picker-item">{{item}}日</view>
+        </picker-view-column>
+      </picker-view>
+    </view>
+  </view>
+</view>

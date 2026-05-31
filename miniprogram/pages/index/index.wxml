@@ -1,0 +1,63 @@
+<view class="page-shell">
+  <view class="retro-hero fade-up">
+    <view class="hero-badge-shell">
+      <view class="hero-badge">植物日志</view>
+    </view>
+    <view wx:if="{{missionCard}}" class="hero-panel">
+      <view class="hero-pin">⚓</view>
+      <view class="hero-kicker">{{missionCard.kicker}}</view>
+      <view class="hero-heading-row">
+        <view class="page-title retro-title">{{missionCard.title}}</view>
+        <text class="retro-leaf">🌱</text>
+      </view>
+      <view class="page-subtitle retro-subtitle">{{missionCard.subtitle}}</view>
+      <view class="hero-date-chip">{{missionCard.dateText}}</view>
+    </view>
+  </view>
+
+  <view wx:if="{{plants.length}}">
+    <view class="section-header">
+      <view class="section-title-row">
+        <text class="section-icon">💧</text>
+        <view>
+          <view class="section-title bright">植物养护日志</view>
+          <view class="section-copy bright-copy">每一条都代表一次养护记录，按最新记录时间排列</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="record-stack">
+      <view
+        wx:for="{{plants}}"
+        wx:key="id"
+        wx:for-index="logIndex"
+        class="record-card fade-up"
+        data-id="{{item.id}}"
+        bindtap="openPlantDetail"
+      >
+        <view class="record-rail">
+          <view class="record-dot"></view>
+          <view class="record-line"></view>
+        </view>
+        <view class="record-main">
+          <view class="record-top">
+            <view class="record-name">{{item.name}}</view>
+            <view class="record-relative">{{item.latestRecordRelative || '暂无记录'}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="add-entry-shell">
+      <button class="add-entry" bindtap="goToCreate">＋</button>
+      <view class="add-entry-text">新增植物</view>
+    </view>
+  </view>
+
+  <view wx:else class="empty-state">
+    <view class="empty-emoji">🌱</view>
+    <view class="empty-title">还没有植物</view>
+    <view class="empty-text">先添加一盆植物，之后这里会开始记录每一次浇水。</view>
+    <button class="pill-button primary" bindtap="goToCreate">添加第一盆</button>
+  </view>
+</view>

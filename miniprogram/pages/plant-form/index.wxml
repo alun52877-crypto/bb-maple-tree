@@ -1,0 +1,81 @@
+<view class="page-shell">
+  <view class="form-top fade-up">
+    <view class="form-badge">{{isEditMode ? '编辑植物' : '新增植物'}}</view>
+  </view>
+
+  <view class="form-hero">
+    <view class="page-title form-title">植物信息</view>
+    <view class="page-subtitle form-subtitle">记录基础养护频率和图片，之后就能轻松追踪</view>
+  </view>
+
+  <view class="form-card fade-up">
+    <view class="field-group">
+      <view class="field-label">名称</view>
+      <input
+        class="field-input"
+        maxlength="20"
+        placeholder="例如：绿萝"
+        value="{{form.name}}"
+        bindinput="onNameChange"
+      />
+    </view>
+
+    <view class="field-group">
+      <view class="field-label">上次浇水</view>
+      <view class="picker-field" bindtap="openLastWaterPicker">
+        <text class="picker-value">{{form.lastWater || '请选择日期'}}</text>
+        <text class="picker-arrow">›</text>
+      </view>
+    </view>
+
+    <view class="field-group">
+      <view class="field-label">备注</view>
+      <textarea
+        class="field-textarea"
+        maxlength="200"
+        placeholder="记录一些植物状态、位置或照顾习惯"
+        value="{{form.note}}"
+        bindinput="onNoteChange"
+      />
+    </view>
+
+    <view class="field-group no-border">
+      <view class="field-row">
+        <view>
+          <view class="field-label">图片</view>
+          <view class="field-hint">支持从相册选择一张植物照片</view>
+        </view>
+        <button class="retro-picker-button" bindtap="chooseImage">选图片</button>
+      </view>
+
+      <view wx:if="{{tempImagePath || form.image}}" class="preview-shell">
+        <image class="preview-image" src="{{tempImagePath || form.image}}" mode="aspectFill"></image>
+      </view>
+    </view>
+  </view>
+
+  <button class="retro-submit-button" loading="{{isSubmitting}}" bindtap="submitForm">
+    {{isEditMode ? '保存修改' : '保存'}}
+  </button>
+
+  <view wx:if="{{showDatePicker}}" class="picker-mask" bindtap="closeDatePicker">
+    <view class="picker-sheet" catchtap="noop">
+      <view class="picker-header">
+        <view class="picker-action cancel" bindtap="closeDatePicker">取消</view>
+        <view class="picker-title">选择日期</view>
+        <view class="picker-action confirm" bindtap="confirmDatePicker">确定</view>
+      </view>
+      <picker-view class="record-picker" indicator-style="height: 88rpx;" value="{{pickerValue}}" bindchange="onPickerChange">
+        <picker-view-column>
+          <view wx:for="{{pickerYears}}" wx:key="*this" class="picker-item">{{item}}年</view>
+        </picker-view-column>
+        <picker-view-column>
+          <view wx:for="{{pickerMonths}}" wx:key="*this" class="picker-item">{{item}}月</view>
+        </picker-view-column>
+        <picker-view-column>
+          <view wx:for="{{pickerDays}}" wx:key="*this" class="picker-item">{{item}}日</view>
+        </picker-view-column>
+      </picker-view>
+    </view>
+  </view>
+</view>
