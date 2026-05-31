@@ -24,28 +24,24 @@ Page({
   },
 
   async loadPlants() {
-    this.plantSource = []
-    await this.loadPlantsPage({ reset: true })
-  },
-
-  async loadPlantsPage({ reset = false } = {}) {
     if (this.data.isLoadingPlants) {
       return
     }
 
-    if (!reset && !this.data.hasMorePlants) {
-      return
-    }
-
-    const offset = reset ? 0 : this.plantSource.length
-
     try {
       this.setData({ isLoadingPlants: true })
-      const { plants, hasMore } = await getPlantsPage({
-        offset,
-        limit: PAGE_SIZE,
-      })
-      this.plantSource = reset ? plants : this.plantSource.concat(plants)
+      this.plantSource = []
+      let hasMore = true
+
+      while (hasMore) {
+        const { plants, hasMore: nextHasMore } = await getPlantsPage({
+          offset: this.plantSource.length,
+          limit: PAGE_SIZE,
+        })
+        this.plantSource = this.plantSource.concat(plants)
+        hasMore = nextHasMore
+      }
+
       const plantList = buildPlantList(this.plantSource)
       const missionCard = this.buildMissionCard(plantList)
 
@@ -62,10 +58,6 @@ Page({
     } finally {
       this.setData({ isLoadingPlants: false })
     }
-  },
-
-  onReachBottom() {
-    this.loadPlantsPage()
   },
 
   buildMissionCard(plants) {
