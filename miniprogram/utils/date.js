@@ -57,11 +57,7 @@ function formatRelativeTime(dateString, compareDate = new Date()) {
     return '昨天'
   }
 
-  if (diffDaysCount < 7) {
-    return `${diffDaysCount} 天前`
-  }
-
-  return formatDisplayDate(dateString)
+  return `${diffDaysCount} 天前`
 }
 
 function diffDays(fromDateString, toDate = new Date()) {
