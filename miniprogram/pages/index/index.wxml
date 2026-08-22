@@ -21,7 +21,7 @@
         <text class="section-icon">💧</text>
         <view>
           <view class="section-title bright">植物养护日志</view>
-          <view class="section-copy bright-copy">每一条都代表一次养护记录，按最新记录时间排列</view>
+          <view class="section-copy bright-copy">每一条都代表一次养护记录，按上次浇水时间排列</view>
         </view>
       </view>
     </view>
@@ -42,7 +42,7 @@
         <view class="record-main">
           <view class="record-top">
             <view class="record-name">{{item.name}}</view>
-            <view class="record-relative">{{item.latestRecordRelative || '暂无记录'}}</view>
+            <view class="record-relative">{{item.lastWaterRelative || '暂无记录'}}</view>
           </view>
         </view>
       </view>

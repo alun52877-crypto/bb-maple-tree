@@ -36,7 +36,6 @@ function stripDocId(plant) {
     lastWaterRelative,
     lastWaterTimestamp,
     heroStatus,
-    listStatus,
     isDue,
     nextDueInDays,
     ...rest

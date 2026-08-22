@@ -102,14 +102,13 @@ function decoratePlant(plant) {
     heroStatus: latestRecord
       ? `最近养护：${getRecordLabel(latestRecord.type)} · ${formatDisplayDate(latestRecord.time)}`
       : '还没有养护记录',
-    listStatus: `上次浇水 ${formatDisplayDate(plant.lastWater) || '暂无记录'}`,
   }
 }
 
-function sortPlantsByTask(plants) {
+function sortPlantsByLastWater(plants) {
   return plants.slice().sort((left, right) => {
-    if (left.latestRecordTimestamp !== right.latestRecordTimestamp) {
-      return right.latestRecordTimestamp - left.latestRecordTimestamp
+    if (left.lastWaterTimestamp !== right.lastWaterTimestamp) {
+      return right.lastWaterTimestamp - left.lastWaterTimestamp
     }
 
     return left.name.localeCompare(right.name, 'zh-Hans-CN')
@@ -117,7 +116,21 @@ function sortPlantsByTask(plants) {
 }
 
 function buildPlantList(plants) {
-  return sortPlantsByTask(plants.map(decoratePlant))
+  return sortPlantsByLastWater(plants.map(decoratePlant))
+}
+
+function selectMissionPlant(plants) {
+  return plants.reduce((latest, plant) => {
+    if (!latest) {
+      return plant
+    }
+
+    if (plant.latestRecordTimestamp !== latest.latestRecordTimestamp) {
+      return plant.latestRecordTimestamp > latest.latestRecordTimestamp ? plant : latest
+    }
+
+    return plant.name.localeCompare(latest.name, 'zh-Hans-CN') < 0 ? plant : latest
+  }, null)
 }
 
 module.exports = {
@@ -128,5 +141,6 @@ module.exports = {
   getRecordClass,
   getRecordLabel,
   normalizePlantRecords,
+  selectMissionPlant,
   updatePlantRecord,
 }
