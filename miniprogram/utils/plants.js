@@ -3,6 +3,7 @@ const { formatDate, formatDisplayDate, formatRelativeTime, parseDate } = require
 const RECORD_LABEL_MAP = {
   water: '浇水',
   rootSterilize: '杀菌灌根',
+  rootFertilize: '施肥灌根',
   sterilizeSpray: '杀菌喷药',
   pestSpray: '驱虫喷药',
   repot: '换盆换土',
@@ -11,17 +12,25 @@ const RECORD_LABEL_MAP = {
 const RECORD_CLASS_MAP = {
   water: 'water',
   rootSterilize: 'root-sterilize',
+  rootFertilize: 'root-fertilize',
   sterilizeSpray: 'sterilize-spray',
   pestSpray: 'pest-spray',
   repot: 'repot',
 }
 
-function createRecord(type, time) {
-  return {
+function createRecord(type, time, note) {
+  const record = {
     id: `record_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
     type,
     time,
   }
+  const trimmedNote = (note || '').trim()
+
+  if (trimmedNote) {
+    record.note = trimmedNote
+  }
+
+  return record
 }
 
 function getRecordLabel(type) {

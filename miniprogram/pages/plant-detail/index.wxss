@@ -234,6 +234,10 @@
   background: #77b1d2;
 }
 
+.timeline-dot.root-fertilize {
+  background: #a9744f;
+}
+
 .timeline-dot.sterilize-spray {
   background: #8ec7a0;
 }
@@ -287,6 +291,10 @@
   color: #2d6a8c;
 }
 
+.timeline-label.root-fertilize {
+  color: #7a4a21;
+}
+
 .timeline-label.sterilize-spray {
   color: #3f7d4c;
 }
@@ -320,6 +328,11 @@
   color: #2d6a8c;
 }
 
+.timeline-relative.root-fertilize {
+  background: #f3e9df;
+  color: #7a4a21;
+}
+
 .timeline-relative.sterilize-spray {
   background: #e6f4e8;
   color: #3f7d4c;
@@ -340,6 +353,17 @@
   font-size: 24rpx;
   font-weight: 700;
   color: rgba(27, 27, 27, 0.58);
+}
+
+.timeline-note {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+  color: rgba(27, 27, 27, 0.55);
+  line-height: 1.5;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .timeline-empty {

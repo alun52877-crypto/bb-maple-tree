@@ -1,7 +1,9 @@
-const { createRecord, decoratePlant, normalizePlantRecords } = require('../../utils/plants')
+const { createRecord, decoratePlant, getRecordLabel, normalizePlantRecords } = require('../../utils/plants')
 const { formatDate, parseDate } = require('../../utils/date')
 const { getPlantById, removePlant, updatePlant } = require('../../utils/storage')
 const { uploadPlantImage } = require('../../utils/cloud')
+
+const NOTE_MAX_LENGTH = 100
 
 function padNumber(value) {
   return value > 9 ? `${value}` : `0${value}`
@@ -236,10 +238,10 @@ Page({
   },
 
   addRecord() {
-    const recordTypes = ['rootSterilize', 'sterilizeSpray', 'pestSpray', 'repot']
+    const recordTypes = ['rootSterilize', 'rootFertilize', 'sterilizeSpray', 'pestSpray', 'repot']
 
     wx.showActionSheet({
-      itemList: ['杀菌灌根', '杀菌喷药', '驱虫喷药', '换盆换土'],
+      itemList: ['杀菌灌根', '施肥灌根', '杀菌喷药', '驱虫喷药', '换盆换土'],
       success: ({ tapIndex }) => {
         const type = recordTypes[tapIndex]
 
@@ -250,14 +252,14 @@ Page({
     })
   },
 
-  async appendRecord(type) {
+  async appendRecord(type, note = '') {
     if (this.data.activeAction === type) {
       return
     }
 
     const { plant } = this.data
     const time = this.getPickedDate()
-    const records = [createRecord(type, time), ...normalizePlantRecords(plant)]
+    const records = [createRecord(type, time, note), ...normalizePlantRecords(plant)]
     const nextPlant = {
       ...plant,
       records,
@@ -273,15 +275,7 @@ Page({
       await this.loadPlant(plant.id)
 
       wx.showToast({
-        title: type === 'water'
-          ? '已记录浇水'
-          : type === 'rootSterilize'
-            ? '已记录杀菌灌根'
-            : type === 'sterilizeSpray'
-              ? '已记录杀菌喷药'
-              : type === 'pestSpray'
-                ? '已记录驱虫喷药'
-                : '已记录换盆换土',
+        title: `已记录${getRecordLabel(type)}`,
         icon: 'success',
       })
     } catch (error) {
@@ -318,12 +312,14 @@ Page({
       return
     }
 
+    const canEditNote = targetRecord.type === 'rootFertilize'
+    const itemList = canEditNote
+      ? ['修改时间', '修改备注', '删除记录']
+      : ['修改时间', '删除记录']
     let tapIndex = -1
 
     try {
-      const result = await wx.showActionSheet({
-        itemList: ['修改时间', '删除记录'],
-      })
+      const result = await wx.showActionSheet({ itemList })
       tapIndex = result.tapIndex
     } catch (error) {
       return
@@ -334,9 +330,14 @@ Page({
       return
     }
 
+    if (canEditNote && tapIndex === 1) {
+      await this.editRecordNote(targetRecord)
+      return
+    }
+
     const { confirm } = await wx.showModal({
       title: '删除记录',
-      content: `确认删除这条“${targetRecord.type === 'water' ? '浇水' : targetRecord.type === 'rootSterilize' ? '杀菌灌根' : targetRecord.type === 'sterilizeSpray' ? '杀菌喷药' : targetRecord.type === 'pestSpray' ? '驱虫喷药' : '换盆换土'}”记录吗？`,
+      content: `确认删除这条“${getRecordLabel(targetRecord.type)}”记录吗？`,
       confirmColor: '#FF6B6B',
     })
 
@@ -354,6 +355,70 @@ Page({
     await this.loadPlant(plant.id)
     wx.showToast({
       title: '已删除记录',
+      icon: 'success',
+    })
+  },
+
+  async promptRecordNote({ title, content = '', cancelText }) {
+    const result = await wx.showModal({
+      title,
+      editable: true,
+      placeholderText: '用了什么肥、稀释比例等',
+      content,
+      confirmText: '保存',
+      cancelText,
+    })
+
+    return {
+      confirm: result.confirm,
+      note: (result.content || '').trim(),
+    }
+  },
+
+  async editRecordNote(record) {
+    const { plant } = this.data
+    const { confirm, note } = await this.promptRecordNote({
+      title: '修改备注',
+      content: record.note || '',
+      cancelText: '取消',
+    })
+
+    if (!confirm) {
+      return
+    }
+
+    if (note.length > NOTE_MAX_LENGTH) {
+      wx.showToast({
+        title: '备注最多 100 字',
+        icon: 'none',
+      })
+      return
+    }
+
+    const nextRecords = normalizePlantRecords(plant).map((item) => {
+      if (item.id !== record.id) {
+        return item
+      }
+
+      const nextRecord = { ...item }
+
+      if (note) {
+        nextRecord.note = note
+      } else {
+        delete nextRecord.note
+      }
+
+      return nextRecord
+    })
+
+    await updatePlant(plant.id, {
+      ...plant,
+      records: nextRecords,
+      updatedAt: new Date().toISOString(),
+    })
+    await this.loadPlant(plant.id)
+    wx.showToast({
+      title: '已更新备注',
       icon: 'success',
     })
   },
@@ -417,8 +482,34 @@ Page({
     }
 
     if (pickerMode === 'create' && pendingRecordType) {
+      const type = pendingRecordType
       this.closeRecordPicker()
-      await this.appendRecord(pendingRecordType)
+
+      if (type === 'rootFertilize') {
+        const { confirm, note } = await this.promptRecordNote({
+          title: '添加备注（可跳过）',
+          cancelText: '跳过',
+        })
+        let nextNote = ''
+
+        if (confirm) {
+          if (note.length > NOTE_MAX_LENGTH) {
+            wx.showToast({
+              title: '备注最多 100 字',
+              icon: 'none',
+            })
+            // 让超限提示展示完再落库;本次不写入备注,可事后从时光轴补写
+            await new Promise((resolve) => setTimeout(resolve, 1500))
+          } else {
+            nextNote = note
+          }
+        }
+
+        await this.appendRecord(type, nextNote)
+        return
+      }
+
+      await this.appendRecord(type)
       return
     }
 

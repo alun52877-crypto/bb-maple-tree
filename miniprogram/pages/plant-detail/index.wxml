@@ -25,7 +25,7 @@
 
     <view class="action-row">
       <button class="retro-detail-button primary" loading="{{activeAction === 'water'}}" bindtap="markWatered">浇水</button>
-      <button class="retro-detail-button secondary" loading="{{activeAction === 'rootSterilize' || activeAction === 'sterilizeSpray' || activeAction === 'pestSpray' || activeAction === 'repot'}}" bindtap="addRecord">添加记录</button>
+      <button class="retro-detail-button secondary" loading="{{activeAction === 'rootSterilize' || activeAction === 'rootFertilize' || activeAction === 'sterilizeSpray' || activeAction === 'pestSpray' || activeAction === 'repot'}}" bindtap="addRecord">添加记录</button>
     </view>
 
     <view class="action-row secondary-row">
@@ -46,6 +46,7 @@
               <view class="timeline-relative {{item.typeClass}}">{{item.relativeTime}}</view>
             </view>
             <view class="timeline-time">{{item.displayTime}}</view>
+            <view wx:if="{{item.note}}" class="timeline-note">{{item.note}}</view>
           </view>
         </view>
         <button wx:if="{{plant.hasMoreTimeline}}" class="timeline-more" bindtap="loadMoreTimeline">查看更多记录</button>
